@@ -1,12 +1,15 @@
+#include <QCoreApplication>
 #include <QtTest>
-#include "test_test.h"
+#include "test_weather_manager.h"
 
 int main(int argc, char *argv[])
 {
+    QCoreApplication app(argc, argv);
+
     int result = 0;
 
-    TestTest testTest;
-    result |= QTest::qExec(&testTest, argc, argv);
+    WeatherManagerTest weatherManagerTest;
+    result |= QTest::qExec(&weatherManagerTest, argc, argv);
 
     return result;
 }
