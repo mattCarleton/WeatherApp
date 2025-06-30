@@ -1,0 +1,13 @@
+# Build artifacts
+build/
+*.o
+*.a
+*.so
+*.exe
+*.out
+
+# Qt Creator user settings
+*.pro.user*
+*.autosave
+*.qmlproject.user*
+*.log
