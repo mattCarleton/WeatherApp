@@ -78,9 +78,33 @@ void WeatherManagerTest::testInvalidCity()
     // make sure an error result was returned
     QCOMPARE(errorSpy.count(), 1);
     QString error = errorSpy.takeFirst().at(0).toString();
-    qDebug() << "Error message:" << error;
     QVERIFY(error.contains("server replied: Not Found", Qt::CaseInsensitive));
 
     // make sure no weather results were returned
     QCOMPARE(weatherSpy.count(), 0);
+}
+
+void WeatherManagerTest::testSuccess()
+{
+    // Ensure we have API key
+    qputenv("OPENWEATHER_API_KEY", originalApiKey);
+
+    WeatherManager wm;
+    QSignalSpy weatherSpy(&wm, &WeatherManager::weatherReceived);
+    QSignalSpy errorSpy(&wm, &WeatherManager::errorOccurred);
+
+    wm.getWeather("Auckland");
+
+    // Wait 5 seconds for either an error or a reply
+    QTRY_VERIFY_WITH_TIMEOUT(weatherSpy.count() > 0 || errorSpy.count() > 0, 5000);
+
+    // Ensure 0 errors and 1 response
+    QVERIFY(errorSpy.isEmpty());  // No error should happen
+    QCOMPARE(weatherSpy.count(), 1);
+
+    QString weatherResult = weatherSpy.takeFirst().at(0).toString();
+
+    QVERIFY(!weatherResult.isEmpty());
+    QVERIFY(weatherResult.contains("Weather", Qt::CaseInsensitive));
+    QVERIFY(weatherResult.contains("Temperature", Qt::CaseInsensitive));
 }

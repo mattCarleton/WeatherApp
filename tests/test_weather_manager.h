@@ -13,6 +13,7 @@ private slots:
     void testNoApiKey(void);
     void testInvalidApiKey(void);
     void testInvalidCity(void);
+    void testSuccess(void);
 };
 
 #endif // TEST_WEATHER_MANAGER_H
